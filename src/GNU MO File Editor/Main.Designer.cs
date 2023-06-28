@@ -28,8 +28,8 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.indexDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.idDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -60,6 +60,8 @@
             this.tbSearch = new System.Windows.Forms.TextBox();
             this.btnPrev = new System.Windows.Forms.Button();
             this.btnNext = new System.Windows.Forms.Button();
+            this.saveFileDialog2 = new System.Windows.Forms.SaveFileDialog();
+            this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataSet1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataTable1)).BeginInit();
@@ -96,9 +98,9 @@
             // 
             this.indexDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.indexDataGridViewTextBoxColumn.DataPropertyName = "index";
-            dataGridViewCellStyle1.Format = "N0";
-            dataGridViewCellStyle1.NullValue = null;
-            this.indexDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle11.Format = "N0";
+            dataGridViewCellStyle11.NullValue = null;
+            this.indexDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle11;
             this.indexDataGridViewTextBoxColumn.DividerWidth = 1;
             this.indexDataGridViewTextBoxColumn.Frozen = true;
             this.indexDataGridViewTextBoxColumn.HeaderText = "#";
@@ -120,8 +122,8 @@
             // 
             this.value.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.value.DataPropertyName = "value";
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.value.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.value.DefaultCellStyle = dataGridViewCellStyle12;
             this.value.HeaderText = "Value";
             this.value.Name = "value";
             // 
@@ -242,14 +244,14 @@
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(159, 22);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem3.Text = "Export to .txt";
             this.toolStripMenuItem3.Click += new System.EventHandler(this.Export_Click);
             // 
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(159, 22);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem4.Text = "Import from .txt";
             this.toolStripMenuItem4.Click += new System.EventHandler(this.Import_Click);
             // 
@@ -258,7 +260,7 @@
             this.splitChartoolStripMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.separatorCombobox});
             this.splitChartoolStripMenu.Name = "splitChartoolStripMenu";
-            this.splitChartoolStripMenu.Size = new System.Drawing.Size(159, 22);
+            this.splitChartoolStripMenu.Size = new System.Drawing.Size(180, 22);
             this.splitChartoolStripMenu.Text = "Split character";
             // 
             // separatorCombobox
@@ -346,6 +348,16 @@
             this.btnNext.UseVisualStyleBackColor = true;
             this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
             // 
+            // saveFileDialog2
+            // 
+            this.saveFileDialog2.DefaultExt = "txt";
+            this.saveFileDialog2.Filter = "Text Files | *.txt";
+            // 
+            // openFileDialog2
+            // 
+            this.openFileDialog2.FileName = "openFileDialog2";
+            this.openFileDialog2.Filter = "Text Files | *.txt";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -405,6 +417,8 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem splitChartoolStripMenu;
         private System.Windows.Forms.ToolStripComboBox separatorCombobox;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog2;
+        private System.Windows.Forms.OpenFileDialog openFileDialog2;
     }
 }
 
