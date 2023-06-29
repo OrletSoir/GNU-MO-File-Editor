@@ -19,99 +19,103 @@ namespace GNU_MO_File_Editor
 		private bool _dataLoaded = false;
 
 		private void openToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (_dataLoaded && MessageBox.Show("You have data loaded, are you sure you want to load new set?", "Data loaded", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) != DialogResult.Yes)
+		{
+			if (_dataLoaded && MessageBox.Show("You have data loaded, are you sure you want to load new set?", "Data loaded", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) != DialogResult.Yes)
+            {
                 return;
+            }
 
             if (openFileDialog1.ShowDialog() != DialogResult.OK)
-            {
-                return;
-            }
+			{
+				return;
+			}
 
-            try
-            {
-                toolStripStatusLabel1.Text = "Loading...";
+			try
+			{
+				toolStripStatusLabel1.Text = "Loading...";
 
-                Refresh();
+				Refresh();
 
-                _moReader = new MOReader(openFileDialog1.FileName);
-                dataSet1.Clear();
+				_moReader = new MOReader(openFileDialog1.FileName);
+				dataSet1.Clear();
 
-                toolStripProgressBar1.Value = 0;
-                toolStripProgressBar1.Visible = true;
-                toolStripProgressBar1.Maximum = (int)_moReader.Count;
+				toolStripProgressBar1.Value = 0;
+				toolStripProgressBar1.Visible = true;
+				toolStripProgressBar1.Maximum = (int)_moReader.Count;
 
-                Refresh();
-                dataTable1.Columns[0].DataType = typeof(Int32);
-                for (int i = 0; i < _moReader.Count; i++)
-                {
-                    DataRow row = dataTable1.NewRow();
-                    MOLine line = _moReader[i];
-                    row["index"] = line.Index;
-                    row["id"] = line.Original;
-                    row["value"] = line.Translated.Replace("\n", Environment.NewLine);
+				Refresh();
+				dataTable1.Columns[0].DataType = typeof(Int32);
+				for (int i = 0; i < _moReader.Count; i++)
+				{
+					DataRow row = dataTable1.NewRow();
+					MOLine line = _moReader[i];
+					row["index"] = line.Index;
+					row["id"] = line.Original;
+					row["value"] = line.Translated.Replace("\n", Environment.NewLine);
 
-                    dataTable1.Rows.Add(row);
+					dataTable1.Rows.Add(row);
 
-                    if (i % 100 == 0)
-                    {
-                        toolStripProgressBar1.Value = i;
+					if (i % 100 == 0)
+					{
+						toolStripProgressBar1.Value = i;
 
-                        toolStripStatusLabel1.Text = $"Loading line {i} of {_moReader.Count}...";
+						toolStripStatusLabel1.Text = $"Loading line {i} of {_moReader.Count}...";
 
-                        //if (i % 2500 == 0)
-                        //	Application.DoEvents();
-                        //else
-                        statusStrip1.Refresh();
-                    }
-                }
+						//if (i % 2500 == 0)
+						//	Application.DoEvents();
+						//else
+						statusStrip1.Refresh();
+					}
+				}
 
-                toolStripProgressBar1.Value = (int)_moReader.Count - 1;
-                toolStripStatusLabel1.Text = "Resizing rows...";
-                statusStrip1.Refresh();
-                Application.DoEvents();
-                dataGridView1.AutoResizeRows(DataGridViewAutoSizeRowsMode.AllCells);
+				toolStripProgressBar1.Value = (int)_moReader.Count - 1;
+				toolStripStatusLabel1.Text = "Resizing rows...";
+				statusStrip1.Refresh();
+				Application.DoEvents();
+				dataGridView1.AutoResizeRows(DataGridViewAutoSizeRowsMode.AllCells);
 
-                toolStripProgressBar1.Visible = false;
-                saveToolStripMenuItem.Enabled = true;
-                toolStripStatusLabel1.Text = $"Loaded {_moReader.Count} lines.";
-                impexpToolStripMenuItem.Enabled = true;
-                _dataLoaded = true;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"There was an error during loading:\r\n\r\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+				toolStripProgressBar1.Visible = false;
+				saveToolStripMenuItem.Enabled = true;
+				toolStripStatusLabel1.Text = $"Loaded {_moReader.Count} lines.";
+				impexpToolStripMenuItem.Enabled = true;
+				_dataLoaded = true;
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"There was an error during loading:\r\n\r\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
 
-        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (saveFileDialog1.ShowDialog() != DialogResult.OK)
-            {
-                return;
-            }
+		private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (saveFileDialog1.ShowDialog() != DialogResult.OK)
+			{
+				return;
+			}
 
-            try
-            {
-                toolStripStatusLabel1.Text = "Saving...";
-                Refresh();
+			try
+			{
+				toolStripStatusLabel1.Text = "Saving...";
+				Refresh();
 
-                _moReader.SaveMOFile(saveFileDialog1.FileName);
+				_moReader.SaveMOFile(saveFileDialog1.FileName);
 
-                toolStripStatusLabel1.Text = "Saved!";
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"There was an error during loading:\r\n\r\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+				toolStripStatusLabel1.Text = "Saved!";
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"There was an error during loading:\r\n\r\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
 
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (_dataLoaded && MessageBox.Show("You have data loaded, are you sure you want to quit?", "Data loaded", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) != DialogResult.Yes)
-				return;
+            {
+                return;
+            }
 
-			this.Close();
+            Close();
 		}
 
 		private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
@@ -128,20 +132,20 @@ namespace GNU_MO_File_Editor
 		private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
 		{
 			if (e.RowIndex < 0 || e.ColumnIndex < 0)
-				return;
+            {
+                return;
+            }
 
-			int i = -1;
+            int i = -1;
 
 			int.TryParse(dataTable1.Rows[e.RowIndex][0].ToString(), out i);
 
 			if (i < 0)
-				return;
+            {
+                return;
+            }
 
-			MOLine line = _moReader[i];
-
-			line.Translated = dataTable1.Rows[e.RowIndex][e.ColumnIndex].ToString().Replace(Environment.NewLine, "\n");
-
-			_moReader[i] = line;
+            UpdateInternalArray(i);
 		}
 
 		private void forumthreadToolStripMenuItem_Click(object sender, EventArgs e)
@@ -154,12 +158,16 @@ namespace GNU_MO_File_Editor
 			int pos = 0;
 
 			if (dataGridView1.SelectedRows.Count > 0)
-				int.TryParse(dataGridView1.SelectedRows[0].Cells[0].Value.ToString(), out pos);
+            {
+                int.TryParse(dataGridView1.SelectedRows[0].Cells[0].Value.ToString(), out pos);
+            }
 
-			if (dataGridView1.SelectedCells.Count > 0)
-				int.TryParse(dataGridView1.Rows[dataGridView1.SelectedCells[0].RowIndex].Cells[0].Value.ToString(), out pos);
+            if (dataGridView1.SelectedCells.Count > 0)
+            {
+                int.TryParse(dataGridView1.Rows[dataGridView1.SelectedCells[0].RowIndex].Cells[0].Value.ToString(), out pos);
+            }
 
-			for (int i = pos - 1; i >= 0; i--)
+            for (int i = pos - 1; i >= 0; i--)
 			{
 				MOLine line = _moReader[i];
 				if (line.Original.IndexOf(tbSearch.Text, StringComparison.InvariantCultureIgnoreCase) != -1 || line.Translated.IndexOf(tbSearch.Text, StringComparison.InvariantCultureIgnoreCase) != -1)
@@ -181,12 +189,16 @@ namespace GNU_MO_File_Editor
 			int pos = 0;
 
 			if (dataGridView1.SelectedRows.Count > 0)
-				int.TryParse(dataGridView1.SelectedRows[0].Cells[0].Value.ToString(), out pos);
+            {
+                int.TryParse(dataGridView1.SelectedRows[0].Cells[0].Value.ToString(), out pos);
+            }
 
-			if (dataGridView1.SelectedCells.Count > 0)
-				int.TryParse(dataGridView1.Rows[dataGridView1.SelectedCells[0].RowIndex].Cells[0].Value.ToString(), out pos);
+            if (dataGridView1.SelectedCells.Count > 0)
+            {
+                int.TryParse(dataGridView1.Rows[dataGridView1.SelectedCells[0].RowIndex].Cells[0].Value.ToString(), out pos);
+            }
 
-			for (int i = pos + 1; i < _moReader.Count; i++)
+            for (int i = pos + 1; i < _moReader.Count; i++)
 			{
 				MOLine line = _moReader[i];
 				if (line.Original.IndexOf(tbSearch.Text, StringComparison.InvariantCultureIgnoreCase) != -1 || line.Translated.IndexOf(tbSearch.Text, StringComparison.InvariantCultureIgnoreCase) != -1)
@@ -212,18 +224,41 @@ namespace GNU_MO_File_Editor
 		}
 
 		private void dataGridView1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode != Keys.C || !e.Control)
+            {
+                return;
+            }
+
+            if (dataGridView1.SelectedCells.Count <= 0)
+            {
+                return;
+            }
+
+            List<string> sl = new List<string>();
+
+            foreach (DataGridViewCell sc in dataGridView1.SelectedCells)
+            {
+                sl.Add(sc.Value.ToString());
+            }
+
+            Clipboard.SetText(string.Join(Environment.NewLine, sl.ToArray()));
+        }
+
+        private bool UpdateInternalArray(int index)
 		{
-			if (e.KeyCode == Keys.C && e.Control)
+			try
 			{
-				if (dataGridView1.SelectedCells.Count > 0)
-				{
-					List<string> sl = new List<string>();
+				MOLine line = _moReader[index];
 
-					foreach (DataGridViewCell sc in dataGridView1.SelectedCells)
-						sl.Add(sc.Value.ToString());
+				line.Translated = dataTable1.Rows[index][2].ToString().Replace(Environment.NewLine, "\n");
 
-					Clipboard.SetText(string.Join(Environment.NewLine, sl.ToArray()));
-				}
+				_moReader[index] = line;
+				return true;
+			}
+			catch
+			{
+				return false;
 			}
 		}
 
@@ -245,15 +280,14 @@ namespace GNU_MO_File_Editor
 				separator = '\t';
 				return true;
 			}
-			else
+
+			if (!char.TryParse(s, out separator))
 			{
-				if (!char.TryParse(s, out separator))
-				{
-					MessageBox.Show("Separator error");
-					return false;
-				}
-				return true;
+				MessageBox.Show("Separator error");
+				return false;
 			}
+
+			return true;
 		}
 
 		private void Export_Click(object sender, EventArgs e)
@@ -369,7 +403,7 @@ namespace GNU_MO_File_Editor
 
 					if (rowcountPerItem > 1)
 					{
-						for (int j = 1; j < rowcountPerItem - 1; j++)
+						for (int j = 1; j < rowcountPerItem; j++)
 						{
 							Fullline = lines[i + j].TrimEnd('\r', '\n');
 							value += Environment.NewLine + Fullline;
@@ -380,7 +414,14 @@ namespace GNU_MO_File_Editor
 					DataRow[] row2 = dataTable1.Select("index=" + index);
 					if (row2.Length > 0)
 					{
+						string lastvalue = row2[0]["value"].ToString();
 						row2[0]["value"] = value;
+
+						if (!UpdateInternalArray(index))
+						{
+							row2[0]["value"] = lastvalue;
+							failedrows++;
+						}
 					}
 					else
 					{
@@ -400,5 +441,5 @@ namespace GNU_MO_File_Editor
 		{
 			toolStripStatusLabel1.Text = $"Selected separator: {separatorCombobox.SelectedItem}";
 		}
-    }
+	}
 }
