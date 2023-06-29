@@ -137,11 +137,7 @@ namespace GNU_MO_File_Editor
 			if (i < 0)
 				return;
 
-			MOLine line = _moReader[i];
-
-			line.Translated = dataTable1.Rows[e.RowIndex][e.ColumnIndex].ToString().Replace(Environment.NewLine, "\n");
-
-			_moReader[i] = line;
+			UpdateInternalArray(i);
 		}
 
 		private void forumthreadToolStripMenuItem_Click(object sender, EventArgs e)
@@ -227,6 +223,22 @@ namespace GNU_MO_File_Editor
 			}
 		}
 
+		private bool UpdateInternalArray(int index)
+		{
+			try
+			{
+                MOLine line = _moReader[index];
+
+                line.Translated = dataTable1.Rows[index][2].ToString().Replace(Environment.NewLine, "\n");
+
+                _moReader[index] = line;
+                return true;
+            }
+			catch
+			{
+				return false;
+			}
+        }
 		private bool IsSeparatorSet()
 		{
 			if (separatorCombobox.SelectedItem == null)
@@ -369,7 +381,7 @@ namespace GNU_MO_File_Editor
 
 					if (rowcountPerItem > 1)
 					{
-						for (int j = 1; j < rowcountPerItem - 1; j++)
+						for (int j = 1; j < rowcountPerItem; j++)
 						{
 							Fullline = lines[i + j].TrimEnd('\r', '\n');
 							value += Environment.NewLine + Fullline;
@@ -380,8 +392,14 @@ namespace GNU_MO_File_Editor
 					DataRow[] row2 = dataTable1.Select("index=" + index);
 					if (row2.Length > 0)
 					{
-						row2[0]["value"] = value;
-					}
+						string lastvalue = row2[0]["value"].ToString();
+                        row2[0]["value"] = value;
+                        if (!UpdateInternalArray(index))
+						{
+							row2[0]["value"] = lastvalue;
+                            failedrows++;
+                        }
+                    }
 					else
 					{
 						failedrows++;
